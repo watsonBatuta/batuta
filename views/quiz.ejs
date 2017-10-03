@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quiz, Qual é seu frevo?</title>
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  </head>
+  <body>
+  	<div class="container-fluid" id="question">
+		<div class="row">
+			<div class="col-md-6">
+				<img src="/images/IMG.jpg" class="img-responsive" alt="Responsive image">
+		    	
+			</div>
+
+<div class="col-md-6">
+	<h1><%= question %></h1>
+	<ul>
+		<% answers.forEach(function(answer){ %>
+<!-- 		<li><a class="btn btn-block btn-primary" href="#" role="button" id=1><%= answer %></a></li> -->
+			<li><form action="/quiz" method="post">
+				<input class="btn btn-block btn-primary" name=resp type="submit" value='<%= answer %>'> 
+			</form></li>
+
+		<%})%>
+	</ul>
+<!-- <ul>
+	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=1><%= answers[0] %></a></li>
+	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=2><%= answers[1] %></a></li>
+	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=3><%= answers[2] %></a></li>
+	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=4><%= answers[3] %></a></li>
+    </ul> -->
+	    	</div>
+    	</div>
+    </div>
+  </body>
+</html>

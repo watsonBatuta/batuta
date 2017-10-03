@@ -1,0 +1,31 @@
+{
+  "name": "batuta",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "bootstrap": "^3.3.7",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "ejs": "~2.5.6",
+    "express": "~4.15.2",
+    "express-myconnection": "^1.0.4",
+    "express-session": "^1.15.6",
+    "fb": "^2.0.0",
+    "livereload": "^0.6.2",
+    "morgan": "~1.8.1",
+    "mysql": "^2.14.1",
+    "node-twitter-api": "^1.8.0",
+    "node-twitter-signin": "0.0.3",
+    "nodemon": "^1.12.1",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "serve-favicon": "~2.4.2",
+    "twitter": "^1.7.1",
+    "watson-developer-cloud": "^2.39.0"
+  }
+}
