@@ -1,7 +1,7 @@
 var PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
 //match com frevo de bloco
 var texto = 'Que mulher é essa senhor!!!!??? Vc não precisa parar de consumir, apenas consumir consciente! Acho que esse é o tipo de vídeo que todo mundo deveria dedicar um tempinho pra ver, seja qualquer tipo de pessoa! Meu Deus eu adoro essa menina! Hahahahahahahahha Já passamos muito por isso e acho q vai ser dobrado no TCC 😥 Lisandra Cruz Gabriele Pessoa Vamos ver se agora as "pessoa" compreendem o quanto é perigoso esse processo desse Juíz por mais que pareça sútil e "pra quem quer".  Gente, é rapidinho é só se cadastrar e pronto, se vc for compatível com ela pode salva-la e se não for, um dia poderá ser com alguém! Simbora!!!!! P.s: num dói, não tem risco de ficar com alguma deficiência e é tão de boas que ninguém fica nem internado, no mesmo dia cabou! Se tá no pai Google, é verdade! <3 Que mulher é essa?! P.s: os comentários são ótimos!!! Meu Deus, virei fã dessa menina! Inspiração!';
-
+var db = require("./db");
 //match frevo canção
 //var texto = 'O HOMÃO Alguns anos atrás, escrevi um texto chamado O Mulherão para o Dia Internacional da Mulher. Fez um razoável sucesso, tanto que até hoje esse texto é lido e publicado em diversos veículos de comunicação quando chega março. Pois cá estamos, novamente, na vizinhança desta data comemorativa, e desta vez minha homenagem vai para o homão, aquele que não tem dia algum no calendário para valorizar seus esforços. Homão é aquele que tem assistido a ascensão feminina nas empresas, na política, na arte, no esporte e tem achado tudo mais do que justo. Nunca li um artigo de um homem reclamando por as mulheres estarem dominando o mundo (não acredito que escrevi isso!). Ao contrário: os inteligentes (e todo homão é inteligente) estão tendo muito prazer em compartilhar seus gabinetes conosco e não choram pelos cantos caso tenham uma chefe mulher (homão chora, mas chora por amor, não por motivos toscos). Homão gosta de mulher. Parece óbvio, mas há muitos homens (não homões) que só gostam de mulher para cama, mesa e banho. O homão gosta de mulher para cama, mesa, banho, escritório, livraria, cinema, restaurante, sala de parto, beira de praia, estrada, museu, palco, estádio. E, às vezes, pode nem gostar delas pra cama, mesa e banho, e ainda assim continuar um homão. Homão é aquele que encara parque no final de semana, faz um jantar delicioso, dá conselho, pede conselho, trabalha até tarde da noite, compensa no outro dia buscando os filhos na escola, dirige o carro, em outras vezes é co-piloto, não acha ruim ela ganhar mais do que ele, não acha nada ruim quando ela propõe uma noitada das arábias, recebe amor, dá amor, é bom de contabilidade e sabe direitinho o que significa fifty-fifty. Homão é aquele que compreende que TPM não é frescura e que reconhece que filhos geralmente sobrecarregam mais as mães do que os pais, então eles correm atrás do prejuízo, aliviando nossa carga com prazer. Homão acha um porre discutir a relação, mas discute. Homão não concorda com tudo o que a gente diz e faz, senão não seria um homão, e sim um panaca, mas escuta, argumenta e acrescenta idéias novas. Homão não fica dizendo que no tempo do pai dele é que era bom, o pai mandava e a mãe obedecia. Homão reconhece as vantagens de estar interagindo com seres do mesmo calibre e não depende de uma arma ou de um carro ultrapotente para provar que é um homão. O homão sabe que não há nada como ter uma grande mulher a seu lado.';
 
@@ -19,27 +19,34 @@ var personality_insights = new PersonalityInsightsV3({
 	version_date: '2016-10-20'
 });
 
-function personalidade(req,res,next,itens){
-	
+
+
+function personalidade(req,res,itens){
+
+
 	var texto_traduzido = tradutor.traduzir(texto, 
 	function(textoTraduzido) {
-		console.log(textoTraduzido)
+		console.log(itens.contentItems);
 		var params = {
 			// Get the content items from the JSON file.
 			content_items: itens.contentItems,
-			consumption_preferences: true,
+			consumption_preferences: false,
 			raw_scores: true,
 			headers: {
-				'accept-language': 'en',
+				'accept-language': 'pt-br',
+				'content-type' : 'application/json',
+				'content-language' : 'en',
 				'accept': 'application/json'
 			}
 		};
+
 
 		personality_insights.profile(params, function(error, response) {
 			if (error)
 				console.log('Error:', error);
 			else
-				match(req, res, next, response['needs']);
+				match(req, res, response);
+
 				//console.log(JSON.stringify(response, null, 2));
 			}
 		);
@@ -50,15 +57,16 @@ function personalidade(req,res,next,itens){
 };
 
 // função para comparar a personalidade do usuário com a das músicas.
-function match (req, res, next, arrayPersonalidade) {
+function match (req, res, arrayPersonalidade) {
 	var diferençafr = null;
 	var diferençafc = null;
 	var diferençafb = null;
 	var diferenças = [];
 	tipoFrevo = {'imagem':null,"idMusica":null};
+	tipoFrevo.modelo = arrayPersonalidade;
 
 	// Faz o cálculo da diferença entre as características de cada frevo.
-	arrayPersonalidade.forEach( function(element, index) {
+	arrayPersonalidade.needs.forEach( function(element, index) {
 		var fr = Math.abs(element['raw_score'] - personalidadeRua['needs'][index]['raw_score']);
 		diferençafr = diferençafr + fr;
 		var fc = Math.abs(element['raw_score'] - personalidadeCançao['needs'][index]['raw_score']);
@@ -74,17 +82,23 @@ function match (req, res, next, arrayPersonalidade) {
 	switch (menor) {
 		case diferençafr:
 			tipoFrevo.idMusica = '0PIzeDHvE2l3fgp4p9HI18';
-			tipoFrevo.imagem = 'http://4.bp.blogspot.com/-GX03S8KKWIg/UPcvYMS4nrI/AAAAAAAAB8c/0Lq4lFGIZ-Y/s1600/olinda+carnaval.jpg';
+			tipoFrevo.imagem = '/images/frevo-de-rua.jpg';
+			tipoFrevo.nome = "Frevo-de-rua";
+			tipoFrevo.descricao = "Primeiro gênero a surgir, é puramente instrumental e único no mundo. Este frevo é destinado a ser dançado.";
 			console.log('frevo rua');
 			break;
 		case diferençafc:
-			tipoFrevo.idMusica = '7F13HgQqJyWB1pMPqyLcfZ';
-			tipoFrevo.imagem = 'http://s2.glbimg.com/GVsedCfZ8e41ZQQ9SM3ooKsnwvc=/620x465/s.glbimg.com/jo/g1/f/original/2015/02/08/610_6716.jpg';
+			tipoFrevo.idMusica = '0QdYkYj0QRzVEZN0g7YwjW';
+			tipoFrevo.imagem = '/images/frevo-cancao.jpg';
+			tipoFrevo.nome = "Frevo-canção";
+			tipoFrevo.descricao = "Apresentando uma melodia mais cantável e andamento mais lento que o frevo-de-rua, este frevo é popular por grandes intérpretes e composições.";
 			console.log('frevo canção');
 			break;
 		case diferençafb:
 			tipoFrevo.idMusica = '4iBtD1GfiQG3lrRDh6uEex';
-			tipoFrevo.imagem = 'http://www.cultura.pe.gov.br/wp-content/uploads/2015/11/Bloco-da-Saudade-6-Rodrigo-Pires.jpg';
+			tipoFrevo.imagem = '/images/frevo-de-bloco.jpg';
+			tipoFrevo.nome = "Frevo-de-bloco";
+			tipoFrevo.descricao = "Executado por orquestra de pau-e-cordas que tem seu aparecimento relacionado ao início da efetiva participação da mulher na folia de rua do Recife.";
 			console.log('frevo bloco');
 			break;
 		default:
@@ -92,10 +106,15 @@ function match (req, res, next, arrayPersonalidade) {
 			break;
 	};
 
-	console.log(tipoFrevo);
-
+	//console.log(tipoFrevo);
 	//console.log(personalidadeBloco['needs'][0]);
+	//res.send(tipoFrevo.modelo);
+	console.log('variaveil quiz');
+	console.log(req.session.index);
+	req.session.tipoFrevo = tipoFrevo;
+	req.session.save();
 	res.render('playFrevo', tipoFrevo);
+
 	
 };
 

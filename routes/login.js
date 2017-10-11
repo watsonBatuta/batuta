@@ -1,6 +1,7 @@
 var express = require('express');
 var tw = require('../twitterlogin');
 var router = express.Router();
+var pi = require('../personality.js');
 
 // Facebook 
 
@@ -52,6 +53,12 @@ function(req, res){
   res.render('login');
 });
 
+
+router.get('/process',
+function(req, res){
+  res.render('process');
+});
+
 router.get('/facebook',
 passport.authenticate('facebook', { scope: 'user_likes,user_about_me,user_posts' }));
 
@@ -60,7 +67,9 @@ passport.authenticate('facebook', { failureRedirect: '/login',scope: 'user_likes
 function(req, res) {
 /*  res.render('wait');
   profile();*/
-  res.redirect('/login/profile');
+  //res.redirect('/login/profile');
+  //res.redirect('/login/process');
+  res.redirect('/quiz');
 });
 
 //Variaveis auxiliares
@@ -90,7 +99,7 @@ function(req, res, next){
 	                itens.contentItems = [];
 	                var dataStr = "data:application/octet-stream;charset=utf-8," + encodeURIComponent(JSON.stringify(response));
 				    p = response.posts.paging.next;
-				    getMessages(response.posts.data);
+				    getMessages(req, response.posts.data);
 				    index++;
 				    getPagePost(req,res,response,p)
 
@@ -101,7 +110,7 @@ function(req, res, next){
 // Fim das rotas do facebook
 // Utilitarios para login com FB
 
-    function getMessages(posts){
+    function getMessages(req, posts){
     	
     	for(var i=0;i<posts.length;i++){
 		    	  if(posts[i].message){
@@ -110,6 +119,7 @@ function(req, res, next){
 		    	  	  itens.contentItems.push(objeto);
 		    	  }
     	}
+    	req.session.itens=itens;
     	
 	}
 	function getPagePost(req,res,response,p){
@@ -119,8 +129,8 @@ function(req, res, next){
 			}, function (error, response, body) {
 
 			    if (!error && response.statusCode === 200) {
-			        console.log(body.data) // Print the json response
-					    getMessages(body.data);
+			        //console.log(body.data) // Print the json response
+					    getMessages(req, body.data);
 					    index++;
 					    if(body.paging){
 						    p = body.paging.next;
@@ -128,8 +138,12 @@ function(req, res, next){
 					    }
 					    else{
 							    //res.render('/pi/match', { req: req.user, posts:JSON.stringify(itens)  });
+							    console.log('Entrou no redirecionamento do post');
 							    req.session.itens=itens;
-							    res.redirect("/pi/match");
+							    //req.session.save();
+							    console.log(req.session.itens);
+							    pi.personalidade(req,res,req.session.itens);
+							    //res.redirect("/pi/match");
 							    //res.send(itens);
 					    }
 			    }

@@ -7,18 +7,82 @@
 
   </head>
   <body>
-  	<div class="container-fluid" id="question">
-		<div class="row">
-			<div class="col-md-6">
-				<img src="<%= imagem %>" class="img-responsive" alt="Responsive image">
-		    	
-			</div>
-
-			<div class="col-md-6">
-				<iframe src="https://open.spotify.com/embed?uri=spotify:track:<%= idMusica %>" width="300" height="380" frameborder="2" allowtransparency="true"></iframe>
-
-	    	</div>
-    	</div>
+    <div class="container-fluid batuta-container">
+      <div class="row">
+        <div class="col-md-12">
+            <div class="card col-md-12 col-sm-12 rounded">
+                <div class="batuta-card" style="min-height:200px">
+                  <div class="col-md-4">
+                  <div class="card-img-top">
+                    <img src="<%= imagem %>" alt="Card image cap">
+                   
+                  </div> 
+                  <div class="card-body">
+                      <iframe src="https://open.spotify.com/embed?uri=spotify:track:<%= idMusica %>" width="100%" height="80px" allowtransparency="true" class="batuta-spotify col-md-12"></iframe>
+                  </div>
+                </div>
+                  <div class="col col-md-8">
+                    <h1 class="frevo-title"><%= nome %></h1>
+                    <p class="frevo-subtitle">Maestro, tua batuta é de <%= nome %>.</p>
+                    <p class="frevo-description"><%= descricao %><br><br>Gostou? Ajude a melhorar o Batuta indicando qual tua preferência de frevo.</p>
+                  </div> 
+                </div> 
+              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card col-md-4 col-sm-4 rounded">
+            <div class="batuta-card">
+              <div class="card-img-top">
+                <img src="/images/frevo-de-rua.jpg" alt="Card image cap">
+              </div>
+                <div class="card-body">
+                <h4 class="card-title">Frevo-de-rua</h4>
+                <p class="card-text">Primeiro gênero a surgir, é puramente instrumental e único no mundo. Este frevo é destinado a ser dançado.</p>
+                <form action="/pi/obrigado" method="post">
+                    <input class="btn btn-primary" name=modelo type="hidden" value='<%- JSON.stringify(modelo) %>'>
+                    <input class="btn btn-primary" name=tipo type="hidden" value='Frevo-de-rua'>
+                    <input class="btn btn-primary" name=frevo type="submit" value='Esse é meu frevo!'>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="card col-md-4 col-sm-4 rounded">
+              <div class="batuta-card">
+                <div class="card-img-top">
+                  <img src="/images/frevo-de-bloco.jpg" alt="Card image cap">
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">Frevo-de-bloco</h4>
+                  <p class="card-text">Executado por orquestra de pau-e-cordas que tem seu aparecimento relacionado ao início da efetiva participação da mulher na folia de rua do Recife.</p>
+                  <form action="/pi/obrigado" method="post">
+                    <input class="btn btn-primary" name=modelo type="hidden" value='<%- JSON.stringify(modelo) %>'>
+                    <input class="btn btn-primary" name=tipo type="hidden" value='Frevo-de-Bloco'>
+                    <input class="btn btn-primary" name=frevo type="submit" value='Esse é meu frevo!'>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <div class="card col-md-4 col-sm-4 rounded">
+            <div class="batuta-card">
+              <div class="card-img-top">
+                <img src="/images/frevo-cancao.jpg"  alt="Card image cap">
+              </div>
+              <div class="card-body rounded">
+                <h4 class="card-title">Frevo-canção</h4>
+                <p class="card-text">Apresentando uma melodia mais cantável e andamento mais lento que o frevo-de-rua, este frevo é popular por grandes intérpretes e composições.</p>
+                <form action="/pi/obrigado" method="post">
+                  <input class="btn btn-primary" name=modelo type="hidden" value='<%- JSON.stringify(modelo) %>'>
+                  <input class="btn btn-primary" name=tipo type="hidden" value='Frevo-canção'>
+                  <input class="btn btn-primary" name=frevo type="submit" value='Esse é meu frevo!'>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <script src="/bootstrap/dist/js/bootstrap.min.js" type="javascript"></script>
   </body>
 </html>

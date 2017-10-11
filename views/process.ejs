@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Batuta - Qual teu frevo?</title>
+    <title>Quiz, Qual é seu frevo?</title>
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/stylesheets/font-awesome.css"/>
     <link rel="stylesheet" href="/stylesheets/bootstrap-social.css"/>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="/js/jquery-1.11.1.min.js"></script> 
   </head>
-  <body>
+  <body onload='$("#loading").css("visibility", "visible");jQuery("body").addClass("loading");$(location).attr("href", "/login/profile");'>
         <div class="modal" style="justify-content: center">
             <div class="modal" style="display: flex; flex-direction: column; justify-content: center;padding-left:43%;">
                 <span style="margin-top: 65px; font-size: 15px; font-weight: bold; ">
@@ -17,12 +17,13 @@
             </div>
         </div>
                   
-    <div class="container-fluid batuta-container" id="question">
+
+       <div class="container-fluid batuta-container" id="question">
       <!-- logo start -->
-      <div class="logo col-lg-4 col-md-4 col-sm-12">
-        <img src="/images/logo.png" class="img-responsive" alt="Batuta Logo">
-        <div class="col-md-12">BATUTA</div>
-      </div>
+        <div class="logo col-lg-4 col-md-4 col-sm-12">
+          <img src="/images/logo.png" class="img-responsive" alt="Batuta Logo">
+          <div class="col-md-12">BATUTA</div>
+        </div>
       <!-- logo end -->
       <!-- onboarding start -->
       <div class="col-lg-8 col-md-8 col-sm-12">
@@ -32,33 +33,23 @@
             <p class="batuta-description">O Batuta, em conjunto com o Paço do Frevo, proporcionará essa experiência para ti. A primeira parte e ser um bom maestro é sintonizar o frevo com tua <b>personalidade</b>. O Batuta pode deixa essa brincadeira ainda mais interessante porque ele consegue te conhecer a partir do seu <b>Facebook</b>. </br></br>
               Participe e descubra qual o frevo tem a tua cara!</p>
         </div>
-    <div>
+          <div>
 
 
-      <div style="text-align:center">
-          <a href="/login/facebook" onclick='$("#loading").css("visibility", "visible");jQuery("body").addClass("loading");' class="btn btn-primary btn-social btn-facebook btn-lg" role="button" id="btn-fb">
-            <span class="fa fa-facebook"></span>Entrar com Facebook
-          </a>
-        </div>
-    </div>
+            <div style="text-align:center">
+                <a href="/login/facebook" onclick='$("#loading").css("visibility", "visible");jQuery("body").addClass("loading");' class="btn btn-primary btn-social btn-facebook btn-lg" role="button" id="btn-fb">
+                  <span class="fa fa-facebook"></span>Entrar com Facebook
+                </a>
+              </div>
+          </div>
     <!-- onboarding end -->
 
       </div>
 
-<div>
-
-
-<!--       <div class="row justify-content-md-center">
-
-  <div class="col-md-6"/>
-    <a class="btn btn-block btn-social btn-twitter href="/login/login-twitter">
-      <span class="fa fa-twitter"></span> Sign in with Facebook
-    </a>
-  </div>
-</div> -->
-
-
+    <script src="/js/jquery-1.11.1.min.js"></script> 
     <script src="/bootstrap/dist/js/bootstrap.min.js" type="javascript"></script>
+
+
   </body>
 </html>
         
