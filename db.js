@@ -92,7 +92,7 @@ function getQuiz(req, res, next) {
 	req.session.index = 0;
 	req.session.save();
 	req.session.respostas = [];
-	res.render('quiz', questionsQuiz.Perguntas[index]);	
+	res.render('quiz', questionsQuiz.Perguntas[req.session.index]);	
 
 };
 
@@ -111,6 +111,7 @@ function saveAnswer(req,res,next){
 	req.session.respostas.push(req.body.resp);
 	if (req.session.index == (questionsQuiz.qtdQuestions-1)) {
 		req.session.index = 0;
+		index = req.session.index;
 		req.session.save();
 		req.session.respostas = [];
 		if (typeof(req.session.tipoFrevo) != 'undefined'){
