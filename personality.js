@@ -11,6 +11,9 @@ var db = require("./db");
 var personalidadeRua = require('./public/modelo/frevoRua_en.json');
 var personalidadeCançao = require('./public/modelo/frevoCancao_en.json');
 var personalidadeBloco = require('./public/modelo/frevoBloco_en.json');
+var musicasFrevoBloco = ['6Ven6hGS7ONOuDNG3WCRms','5qPyNVc3OSsJLaAKwkANJ8','5oH4xfSPz1t7AXK6vcVQPc'];
+var musicasFrevoCancao = ['01r1TXOzRhmPFJ1qFdy0Ax','7D1v9rENBmgoeCiXT2vrCN','1lvwdKXgfFZErlwiKYiChD','3vtCISVWQZDreIzsAyufYJ','1LkNpErgpMnVFZzh7kKOZa','4f43XXaORxjBnPW4mVlHZq','1fPJ4Afon3g8wOAhVpEMM5','7D1v9rENBmgoeCiXT2vrCN','0itxJkb4B6hStPE7hpAKbC'];
+var musicasFrevoRua = ['3BXoTlXoWihK4jhQAeT5kF','39evTS1QL9AAAUMDDC1XAR','5DuxbCgbDLxKeRr4X4gnsc','0JB5b0PrkPfj2MDB6duDT4','37fNq2yvRbx2XeDqn5xpyz','1xg50Vevonw9PPgQeQ1QeV'];
 var tradutor = require("./translate.js");
 
 var personality_insights = new PersonalityInsightsV3({
@@ -21,20 +24,22 @@ var personality_insights = new PersonalityInsightsV3({
 
 
 
-function personalidade(req,res,itens){
+function personalidade(req,res,itens, name){
 
-
-	var texto_traduzido = tradutor.traduzir(texto, 
+	console.log('personalidade ',itens);
+	var texto_traduzido = tradutor.traduzir(itens, 
 	function(textoTraduzido) {
-		console.log(itens.contentItems);
+
+		console.log(textoTraduzido);
 		var params = {
 			// Get the content items from the JSON file.
-			content_items: itens.contentItems,
+			text: textoTraduzido,
+			//content_items: itens.contentItems,
 			consumption_preferences: false,
 			raw_scores: true,
 			headers: {
 				'accept-language': 'pt-br',
-				'content-type' : 'application/json',
+				//'content-type' : 'application/json',
 				'content-language' : 'en',
 				'accept': 'application/json'
 			}
@@ -42,60 +47,176 @@ function personalidade(req,res,itens){
 
 
 		personality_insights.profile(params, function(error, response) {
-			if (error)
-				console.log('Error:', error);
-			else
-				match(req, res, response);
+			tipoFrevo = {'imagem':null,"idMusica":null, "modelo":null};
+			if (error){
+				console.log('Error123:', error);
+				random = Math.floor(Math.random() * 3);
+				switch (random) {
+					case 0:
+						tipoFrevo.idMusica = musicasFrevoRua[Math.floor(Math.random() * musicasFrevoRua.length)];
+						tipoFrevo.imagem = '/images/frevo-de-rua.jpg';
+						tipoFrevo.nome = "Frevo-de-rua";
+						tipoFrevo.descricao = "Primeiro gênero a surgir, é puramente instrumental e único no mundo. Este frevo é destinado a ser dançado.";
+						console.log('frevo rua');
+						break;
+					case 1:
+						tipoFrevo.idMusica = musicasFrevoCancao[Math.floor(Math.random() * musicasFrevoCancao.length)];
+						tipoFrevo.imagem = '/images/frevo-cancao.jpg';
+						tipoFrevo.nome = "Frevo-canção";
+						tipoFrevo.descricao = "Apresentando uma melodia mais cantável e andamento mais lento que o frevo-de-rua, este frevo é popular por grandes intérpretes e composições.";
+						console.log('frevo canção');
+						break;
+					case 2:
+						tipoFrevo.idMusica = musicasFrevoBloco[Math.floor(Math.random() * musicasFrevoBloco.length)];;
+						tipoFrevo.imagem = '/images/frevo-de-bloco.jpg';
+						tipoFrevo.nome = "Frevo-de-bloco";
+						tipoFrevo.descricao = "Executado por orquestra de pau-e-cordas que tem seu aparecimento relacionado ao início da efetiva participação da mulher na folia de rua do Recife.";
+						console.log('frevo bloco');
+						break;
+					default:
+						console.log("deu algum erro");
+						break;
+				}
+				console.log("ela é frevo", random);
+				req.session.tipoFrevo = tipoFrevo;
+				req.session.save();
+				res.render('playFrevo', tipoFrevo);
+
+
+
+			}else{
+				console.log(response);
+				console.log('pq eu to chamando match?')
+				match(req, res, response, name);
+			}
 
 				//console.log(JSON.stringify(response, null, 2));
 			}
 		);
 	},
 	 function(err) {
+	 	random = Math.floor(Math.random() * 3);
+		switch (ramdom) {
+			case 0:
+				tipoFrevo.idMusica = musicasFrevoRua[Math.floor(Math.random() * musicasFrevoRua.length)];
+				tipoFrevo.imagem = '/images/frevo-de-rua.jpg';
+				tipoFrevo.nome = "Frevo-de-rua";
+				tipoFrevo.descricao = "Primeiro gênero a surgir, é puramente instrumental e único no mundo. Este frevo é destinado a ser dançado.";
+				console.log('frevo rua');
+				break;
+			case 1:
+				tipoFrevo.idMusica = musicasFrevoCancao[Math.floor(Math.random() * musicasFrevoCancao.length)];
+				tipoFrevo.imagem = '/images/frevo-cancao.jpg';
+				tipoFrevo.nome = "Frevo-canção";
+				tipoFrevo.descricao = "Apresentando uma melodia mais cantável e andamento mais lento que o frevo-de-rua, este frevo é popular por grandes intérpretes e composições.";
+				console.log('frevo canção');
+				break;
+			case 2:
+				tipoFrevo.idMusica = musicasFrevoBloco[Math.floor(Math.random() * musicasFrevoBloco.length)];;
+				tipoFrevo.imagem = '/images/frevo-de-bloco.jpg';
+				tipoFrevo.nome = "Frevo-de-bloco";
+				tipoFrevo.descricao = "Executado por orquestra de pau-e-cordas que tem seu aparecimento relacionado ao início da efetiva participação da mulher na folia de rua do Recife.";
+				console.log('frevo bloco');
+				break;
+			default:
+			console.log("deu algum erro");
+			break;
+	};
+
 		console.log(err)
 	});
 };
 
 // função para comparar a personalidade do usuário com a das músicas.
-function match (req, res, arrayPersonalidade) {
+function match (req, res, arrayPersonalidade, name) {
 	var diferençafr = null;
 	var diferençafc = null;
 	var diferençafb = null;
+	var diffr = null;
+	var diffc = null;
+	var diffb = null;
 	var diferenças = [];
 	tipoFrevo = {'imagem':null,"idMusica":null};
 	tipoFrevo.modelo = arrayPersonalidade;
-
 	// Faz o cálculo da diferença entre as características de cada frevo.
 	arrayPersonalidade.needs.forEach( function(element, index) {
-		var fr = Math.abs(element['raw_score'] - personalidadeRua['needs'][index]['raw_score']);
-		diferençafr = diferençafr + fr;
-		var fc = Math.abs(element['raw_score'] - personalidadeCançao['needs'][index]['raw_score']);
-		diferençafc = diferençafc + fc;
-		var fb = Math.abs(element['raw_score'] - personalidadeBloco['needs'][index]['raw_score']);
-		diferençafb = diferençafb + fb;
-	});
+		diferenças = []
+		if(element.trait_id == 'need_excitement1' || element.trait_id == 'need_curiosity1'){
+			var fr = Math.abs(element['raw_score'] - personalidadeRua['needs'][index]['raw_score']*1.1);
+			diferenças.push(fr);
+			console.log('diferença rua',fr);
+			diferençafr = diferençafr + fr;
+			var fc = Math.abs(element['raw_score'] - personalidadeCançao['needs'][index]['raw_score']*1);
+			diferençafc = diferençafc + fc;
+			diferenças.push(fc);
+			console.log('diferença cançao', fc);
+			var fb = Math.abs(element['raw_score'] - personalidadeBloco['needs'][index]['raw_score']*1);
+			diferençafb = diferençafb + fb;
+			diferenças.push(fb);
+			console.log('diferença bloco ', fb);
 
+		}else{
+			var fr = Math.abs(element['raw_score'] - personalidadeRua['needs'][index]['raw_score']);
+			diferenças.push(fr);
+			console.log('diferença rua',fr);
+			diferençafr = diferençafr + fr;
+			var fc = Math.abs(element['raw_score'] - personalidadeCançao['needs'][index]['raw_score']);
+			diferençafc = diferençafc + fc;
+			diferenças.push(fc);
+			console.log('diferença cançao', fc);
+			var fb = Math.abs(element['raw_score'] - personalidadeBloco['needs'][index]['raw_score']);
+			diferençafb = diferençafb + fb;
+			diferenças.push(fb);
+			console.log('diferença bloco ', fb);
+		}
+
+		diferenças.sort();
+		console.log('Diferenças ', diferenças);
+		
+			switch (diferenças[0]) {
+				case fr:
+					console.log('Frevo de rua + 1');
+					diffr++;
+					break;
+				case fb:
+					console.log('Frevo de bloco + 1');
+					diffb++;
+					break;
+				case fc:
+					console.log('Frevo de cançao + 1');
+					diffc++;
+					break;
+			}
+		
+	});
+	console.log(diffb, diffr, diffc);
+	console.log('Frevo-de-bloco, Frevo-de-rua, frevo-cancao')
+	console.log(diferençafb,diferençafr, diferençafc);
+	diferençafb =  diferençafb - diffb/100;
+	diferençafr = diferençafr - diffr/100;
+	diferençafc = diferençafc - diffc/100;
+	console.log(' depois Frevo-de-bloco, Frevo-de-rua, frevo-cancao')
 	console.log(diferençafb,diferençafr, diferençafc);
 
 	//console.log(Math.min(diferençafb, diferençafr, diferençafc));
 	menor = Math.min(diferençafb, diferençafr, diferençafc)
 	switch (menor) {
 		case diferençafr:
-			tipoFrevo.idMusica = '0PIzeDHvE2l3fgp4p9HI18';
+			tipoFrevo.idMusica = musicasFrevoRua[Math.floor(Math.random() * musicasFrevoRua.length)];
 			tipoFrevo.imagem = '/images/frevo-de-rua.jpg';
 			tipoFrevo.nome = "Frevo-de-rua";
 			tipoFrevo.descricao = "Primeiro gênero a surgir, é puramente instrumental e único no mundo. Este frevo é destinado a ser dançado.";
 			console.log('frevo rua');
 			break;
 		case diferençafc:
-			tipoFrevo.idMusica = '0QdYkYj0QRzVEZN0g7YwjW';
+			tipoFrevo.idMusica = musicasFrevoCancao[Math.floor(Math.random() * musicasFrevoCancao.length)];
 			tipoFrevo.imagem = '/images/frevo-cancao.jpg';
 			tipoFrevo.nome = "Frevo-canção";
 			tipoFrevo.descricao = "Apresentando uma melodia mais cantável e andamento mais lento que o frevo-de-rua, este frevo é popular por grandes intérpretes e composições.";
 			console.log('frevo canção');
 			break;
 		case diferençafb:
-			tipoFrevo.idMusica = '4iBtD1GfiQG3lrRDh6uEex';
+			tipoFrevo.idMusica = musicasFrevoBloco[Math.floor(Math.random() * musicasFrevoBloco.length)];;
 			tipoFrevo.imagem = '/images/frevo-de-bloco.jpg';
 			tipoFrevo.nome = "Frevo-de-bloco";
 			tipoFrevo.descricao = "Executado por orquestra de pau-e-cordas que tem seu aparecimento relacionado ao início da efetiva participação da mulher na folia de rua do Recife.";
@@ -110,6 +231,7 @@ function match (req, res, arrayPersonalidade) {
 	//console.log(personalidadeBloco['needs'][0]);
 	//res.send(tipoFrevo.modelo);
 	console.log('variaveil quiz');
+	console.log(name);
 	console.log(req.session.index);
 	req.session.tipoFrevo = tipoFrevo;
 	req.session.save();

@@ -70,6 +70,7 @@ li {
 	color: #f3f3f3;
 	border-radius: 6px;
 	padding: 10px;
+	margin-top: 5px;
 }
 
 .batuta-card .btn {
@@ -111,10 +112,22 @@ li {
     height:     100%; 
     width:      100%; 
     background: rgba( 255, 255, 255, .8 )  
-        url('/images/l6BEEsW.gif') 
+        url('/images/loading_logo.gif') 
         50% 50%  
         no-repeat; 
-} 
+}
+
+.quiz-answer{
+	padding-left: initial;
+	margin-top: 20px;
+	max-width: 90%;
+
+}
+
+.text-answer{
+	font-size: large;
+	text-align: left;
+}
  
 /* When the body has the loading class, we turn 
 the scrollbar off with overflow:hidden */ 

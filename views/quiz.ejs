@@ -7,34 +7,29 @@
     <script src="/js/jquery-1.11.1.min.js"></script> 
 
   </head>
-  <!-- <body onload='$("#loading").css("visibility", "visible");jQuery("body").addClass("loading");$(location).attr("href", "/login/profile");'> -->
   	<body onload='$("#loading").css("visibility", "visible");jQuery("body").addClass("loading");$(location).attr("href", "<%=loading %>");'>
-  	<div class="container-fluid" id="question">
+  	<div class="container-fluid batuta-container" id="question">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-6 col-sm-12">
 				<img src="/images/IMG.jpg" class="img-responsive" alt="Responsive image">
 		    	
 			</div>
 
-<div class="col-md-6">
-	<h1><%= question %></h1>
-	<ul>
-		<% answers.forEach(function(answer){ %>
-<!-- 		<li><a class="btn btn-block btn-primary" href="#" role="button" id=1><%= answer %></a></li> -->
-			<li><form action="/quiz" method="post">
-				<input class="btn btn-primary" name=index type="hidden" value='<%= index %>'>
-				<input class="btn btn-block btn-primary" name=resp type="submit" value='<%= answer %>'> 
-			</form></li>
+		<div class="col-md-6 col-sm-12">
+			<div class="batuta-card" style="min-height:100px">
+		    	<h1 class="frevo-title"><%= question %></h1>    	
+		    </div> 
 
-		<%})%>
-	</ul>
+			<ul class="quiz-answer" >
+				<% answers.forEach(function(answer){ %>
+		<!-- 		<li><a class="btn btn-block btn-primary" href="#" role="button" id=1><%= answer %></a></li> -->
+					<li><form action="/quiz" method="post">
+						<input class="btn btn-primary" name=index type="hidden" value='<%= index %>'>
+						<input class="btn btn-block btn-primary text-answer" name=resp type="submit" value='<%= answer %>'> 
+					</form></li>
 
-<!-- <ul>
-	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=1><%= answers[0] %></a></li>
-	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=2><%= answers[1] %></a></li>
-	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=3><%= answers[2] %></a></li>
-	    <li><a class="btn btn-block btn-primary" href="#" role="button" id=4><%= answers[3] %></a></li>
-    </ul> -->
+				<%})%>
+			</ul>
 	    	</div>
     	</div>
     </div>

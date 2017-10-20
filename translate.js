@@ -5,8 +5,8 @@ function traduzir(texto, successCallback, errCallback){
 
     var language_translator = watson.language_translator({
         url: "https://gateway.watsonplatform.net/language-translator/api",
-        username: 'ca50a514-4ae8-4f33-a6c6-493899eed6b1',
-        password: 'SGUqzITxuRXz',
+        username: 'e8526278-1496-4258-bddb-b07c106c8046',
+        password: 'NQTdqCoEcVn0',
         version: 'v2'
     });
         language_translator.translate({

@@ -14,8 +14,8 @@ var app = require ('../app');
 //App para facebook
 
 passport.use(new Strategy({
-  clientID: "821548781349833",//process.env.CLIENT_ID,
-  clientSecret: "bcd02f7ae7100ac0396df7dde70d54ac",//process.env.CLIENT_SECRET,
+  clientID: "146241416116297",//process.env.CLIENT_ID,
+  clientSecret: "e2e2ac3cdbd867cc94daa3f4b3f4217a",//process.env.CLIENT_SECRET,
   callbackURL: '/login/facebook/return'
   //callbackURL: 'http://localhost:3000/login/facebook/return'
 },
@@ -75,7 +75,8 @@ function(req, res) {
 //Variaveis auxiliares
 var p = null;
 var itens = {};
-itens.contentItems=[];
+texto = '';
+itens.contentItems='';
 var index = 0;
 
 router.get('/profile',
@@ -91,17 +92,21 @@ function(req, res, next){
      return;
     }
     console.log(res.id);
+    req.session.nameFB = res.name;
+    req.session.save();
     console.log("aq: "+res.name);
 
   });
   
 	FB.api('me', {fields :'id,name,posts,likes'}, function(response) {
-	                itens.contentItems = [];
+					console.log(response.name);
+	                itens.contentItems = '';
+	                texto = '';
 	                var dataStr = "data:application/octet-stream;charset=utf-8," + encodeURIComponent(JSON.stringify(response));
 				    p = response.posts.paging.next;
 				    getMessages(req, response.posts.data);
 				    index++;
-				    getPagePost(req,res,response,p)
+				    getPagePost(req,res,response,p);
 
 
     });
@@ -114,12 +119,18 @@ function(req, res, next){
     	
     	for(var i=0;i<posts.length;i++){
 		    	  if(posts[i].message){
-		    	  	  var objeto = {};
-		    	  	  objeto.content=posts[i].message;
-		    	  	  itens.contentItems.push(objeto);
+		    	  	  //var objeto = {};
+		    	  	  //objeto.content=posts[i].message;
+		    	  	  //objeto.language = "es";
+		    	  	  //console.log('post ', posts[i].message);
+		    	  	  //itens.contentItems.
+		    	  	  texto = texto + posts[i].message + ". ";
+
 		    	  }
     	}
-    	req.session.itens=itens;
+    	//console.log('dentro do get message', texto);
+    	//req.session.itens=itens;
+    	req.session.itens=texto;
     	
 	}
 	function getPagePost(req,res,response,p){
@@ -132,16 +143,22 @@ function(req, res, next){
 			        //console.log(body.data) // Print the json response
 					    getMessages(req, body.data);
 					    index++;
-					    if(body.paging){
+					    if(body.paging && texto.length < 6500){
 						    p = body.paging.next;
+						    console.log('Proxima página de posts');
+						    console.log(body);
+						    console.log('Total de caracteres ', texto.length);
 					    	getPagePost(req,res,body,p);
 					    }
 					    else{
 							    //res.render('/pi/match', { req: req.user, posts:JSON.stringify(itens)  });
 							    console.log('Entrou no redirecionamento do post');
-							    req.session.itens=itens;
+							    console.log(itens);
+							    //req.session.itens=itens.contentItems;
+							    req.session.itens=texto;
 							    //req.session.save();
 							    console.log(req.session.itens);
+
 							    pi.personalidade(req,res,req.session.itens);
 							    //res.redirect("/pi/match");
 							    //res.send(itens);
