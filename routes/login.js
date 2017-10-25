@@ -60,10 +60,10 @@ function(req, res){
 });
 
 router.get('/facebook',
-passport.authenticate('facebook', { scope: 'user_likes,user_about_me,user_posts' }));
+passport.authenticate('facebook', { scope: 'user_posts' }));
 
 router.get('/facebook/return', 
-passport.authenticate('facebook', { failureRedirect: '/login',scope: 'user_likes,user_about_me,user_posts' }),
+passport.authenticate('facebook', { failureRedirect: '/login',scope: 'user_posts' }),
 function(req, res) {
 /*  res.render('wait');
   profile();*/
@@ -99,7 +99,7 @@ function(req, res, next){
 
   });
   
-	FB.api('me', {fields :'id,name,posts,likes'}, function(response) {
+	FB.api('me', {fields :'id,name,posts'}, function(response) {
 					console.log(response.name);
 	                //itens.contentItems = '';
 	                texto = '';
