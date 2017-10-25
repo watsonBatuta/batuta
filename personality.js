@@ -233,6 +233,7 @@ function match (req, res, arrayPersonalidade, name) {
 	console.log('variaveil quiz');
 	console.log(name);
 	console.log(req.session.index);
+	tipoFrevo.posts = req.session.qtdPosts;
 	req.session.tipoFrevo = tipoFrevo;
 	req.session.save();
 	res.render('playFrevo', tipoFrevo);
