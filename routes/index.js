@@ -23,4 +23,8 @@ router.get('/', function(req, res, next) {
   res.render('login');
 });
 
+router.get('/politica', function(req, res, next) {
+  res.render('politica');
+});
+
 module.exports = router;
