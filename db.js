@@ -5,7 +5,7 @@ var questionsQuiz = {
   "qtdQuestions": 5,
   "Perguntas": [
     {
-      "img": "",
+      "img": "/images/frevo_cancao.jpg",
       "loading": "/login/profile",
       "index":0,
       "question": "Com qual frequencia você escuta frevo longe do carnaval  1",
@@ -17,7 +17,7 @@ var questionsQuiz = {
       ]
     },
     {
-      "img": "",
+      "img": "/images/frevo_RUA.jpg",
       "loading": "#",
       "index": 1,
       "question": "No carnaval como você costuma reagir aquele calafrio?  2",
@@ -29,7 +29,7 @@ var questionsQuiz = {
       ]
     },
     {
-      "img": "",
+      "img": "/images/frevo_bloco.jpg",
       "loading": "#",
       "index":2,
       "question": "No carnaval como você costuma reagir aquele calafrio?   3",
@@ -41,7 +41,7 @@ var questionsQuiz = {
       ]
     },
     {
-      "img": "",
+      "img": "/images/frevo_cancao.jpg",
       "loading": "#",
       "index":3,
       "question": "No carnaval como você costuma reagir aquele calafrio?  4",
@@ -53,7 +53,7 @@ var questionsQuiz = {
       ]
     },
     {
-      "img": "",
+      "img": "/images/frevo_RUA.jpg",
       "loading": "#",
       "index": 4,
       "question": "No carnaval como você costuma reagir aquele calafrio?   5",
