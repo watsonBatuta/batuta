@@ -3,8 +3,8 @@ var TwitterLogin = require('node-twitter-api');
 //Conexões com Midias sociais
 
 //variáveis para conexão com as Apis do Twitter
-var key = '37MrtfXKPjck0Q6mZXaIHLS7b';
-var secret = 'NvFNy7P8CLQn70xvscesofePmRxagX1znlBr0BZUsPx6ICMnxo';
+var key = '';
+var secret = '';
 var token = null;
 var token_secret = null;
 var _requestSecret;
